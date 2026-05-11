@@ -2,7 +2,7 @@
 
 Deep iterative web research for any question.
 
-`internet` turns broad research prompts into a disciplined investigation loop: Ask, Know, Browse, Prove. It is built for current facts, source triangulation, contradiction searches, claim ledgers, and cited synthesis.
+`internet` turns broad research prompts into a disciplined investigation loop for current facts, source triangulation, contradiction searches, claim ledgers, and cited synthesis. When the user wants durable research memory, it uses AKBP: the Agent Knowledge Base Protocol from [github.com/rohitg00/akbp](https://github.com/rohitg00/akbp).
 
 ## Install
 
@@ -16,6 +16,7 @@ Deep iterative web research for any question.
 - Plans search passes before answering.
 - Searches broad, primary, independent, community, contradiction, and gap-fill sources.
 - Tracks claims, confidence, source quality, dates, and unresolved gaps.
+- Prepares AKBP source and claim previews for durable, review-gated research memory.
 - Produces cited briefs, deep reports, comparisons, timelines, and evidence packs.
 - Includes a workspace helper for long-running investigations.
 
@@ -39,4 +40,4 @@ Use $internet to verify the latest Kubernetes Gateway API production readiness c
 python3 skills/internet/scripts/research_workspace.py "AI browser automation tools" --depth deep
 ```
 
-The helper creates a working folder with query, claim, source, and gap ledgers.
+The helper creates a working folder with query, claim, source, gap, and AKBP intake ledgers.

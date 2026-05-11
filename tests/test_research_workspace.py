@@ -29,6 +29,7 @@ def test_create_workspace(tmp_path):
         "queries.md",
         "claims.md",
         "sources.csv",
+        "akbp-intake.md",
         "gaps.md",
         "manifest.json",
     }
@@ -36,4 +37,5 @@ def test_create_workspace(tmp_path):
     manifest = json.loads((target / "manifest.json").read_text())
     assert manifest["topic"] == "Should we use Bun?"
     assert manifest["depth"] == "deep"
-    assert "AKBP" in (target / "research.md").read_text()
+    assert "Research Loop" in (target / "research.md").read_text()
+    assert "Agent Knowledge Base Protocol" in (target / "akbp-intake.md").read_text()

@@ -31,7 +31,7 @@ Depth: {depth}
 - Assumptions:
 - Required output:
 
-## AKBP
+## Research Loop
 
 ### Ask
 
@@ -64,6 +64,45 @@ Depth: {depth}
 ## Synthesis Draft
 
 ## Final Answer
+"""
+
+
+def akbp_intake_markdown(topic):
+    return f"""# AKBP Intake Preview: {topic}
+
+AKBP means Agent Knowledge Base Protocol.
+
+Use this file to prepare reviewed sources and durable claim proposals. Do not apply AKBP writes until the user approves the dry-run preview.
+
+## Knowledge Base
+
+- AKBP path:
+- Existing context retrieved:
+- Source verification status:
+- Export or import check status:
+
+## Sources To Register
+
+| Source ID | Type | Locator | Title | Scope | Notes |
+|---|---|---|---|---|---|
+
+## Claim Proposals
+
+| Claim | Type | Evidence Source IDs | Confidence | Status | Apply? |
+|---|---|---|---|---|---|
+
+## Lifecycle Notes
+
+| Existing Claim | New Claim | Relation | Reason |
+|---|---|---|---|
+
+## Dry-Run Review
+
+- Command or JSONL request:
+- Review result:
+- Redactions:
+- Would-write paths:
+- Approval status:
 """
 
 
@@ -111,6 +150,7 @@ def create_workspace(topic, root, depth, overwrite):
             "queries.md",
             "claims.md",
             "sources.csv",
+            "akbp-intake.md",
             "gaps.md",
         ],
     }
@@ -119,6 +159,7 @@ def create_workspace(topic, root, depth, overwrite):
         "queries.md": queries_markdown(),
         "claims.md": claims_markdown(),
         "sources.csv": "id,url,title,author,published,accessed,type,tier,notes\n",
+        "akbp-intake.md": akbp_intake_markdown(topic),
         "gaps.md": gaps_markdown(),
         "manifest.json": json.dumps(manifest, indent=2) + "\n",
     }

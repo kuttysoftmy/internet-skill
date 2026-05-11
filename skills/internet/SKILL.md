@@ -12,6 +12,7 @@ metadata:
     - verification
     - osint
     - source-triangulation
+    - akbp
 ---
 
 # Internet
@@ -20,7 +21,7 @@ metadata:
 
 Use this skill to turn an open internet question into a sourced, evidence-weighted answer. Treat web research as an iterative investigation: define the target, build a source map, search in passes, extract claims, verify against independent evidence, and synthesize with citations and caveats.
 
-If the user asks for "AKBP", use the AKBP loop defined here: Ask, Know, Browse, Prove. If they do not mention AKBP, still use the loop implicitly for non-trivial research.
+When the user mentions AKBP, treat it as Agent Knowledge Base Protocol from [github.com/rohitg00/akbp](https://github.com/rohitg00/akbp). Use it as the durable source, claim, citation, lifecycle, and export layer for research memory. Read [akbp-protocol.md](references/akbp-protocol.md) before using AKBP-specific workflows.
 
 ## Quick Start
 
@@ -41,7 +42,7 @@ For long investigations, create a scratch workspace:
 python3 skills/internet/scripts/research_workspace.py "topic or question"
 ```
 
-## AKBP Loop
+## Research Loop
 
 ### Ask
 
@@ -130,6 +131,17 @@ Core rules:
 - Ask before using credentials, private accounts, or anything that could expose personal data.
 - For medical, legal, financial, safety, or security topics, state limits clearly and ground claims in authoritative sources.
 
+## AKBP Protocol Integration
+
+Read [akbp-protocol.md](references/akbp-protocol.md) when:
+
+- The user explicitly says AKBP.
+- The research should become durable knowledge for future agents.
+- The task needs reviewed claims, source hashes, audit history, lifecycle updates, export bundles, or context retrieval.
+- The user has an existing AKBP knowledge base or asks to create one.
+
+Do not silently write durable AKBP claims. Preview memory first with dry-run behavior, show the proposed claims and evidence, and apply only after explicit user approval or trusted local policy.
+
 ## Output Shapes
 
 Read [output-templates.md](references/output-templates.md) when the user asks for a report, memo, comparison, source table, brief, timeline, recommendation, or evidence pack.
@@ -152,6 +164,7 @@ Use `scripts/research_workspace.py` for investigations that need persistence, ma
 - `queries.md`: query log and iteration notes.
 - `claims.md`: claim ledger.
 - `sources.csv`: source ledger.
+- `akbp-intake.md`: AKBP source and claim preview checklist.
 - `gaps.md`: open questions and follow-up searches.
 - `manifest.json`: machine-readable metadata.
 

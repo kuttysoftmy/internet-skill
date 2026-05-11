@@ -16,13 +16,15 @@
     "deep-research",
     "citations",
     "verification",
-    "osint"
+    "osint",
+    "akbp",
+    "knowledge-base"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Internet",
     "shortDescription": "Deep iterative web research for any question",
-    "longDescription": "Research any question across the public web with iterative query passes, source triangulation, contradiction search, claim ledgers, and cited synthesis.",
+    "longDescription": "Research any question across the public web with iterative query passes, source triangulation, contradiction search, claim ledgers, cited synthesis, and optional AKBP durable-memory preparation.",
     "developerName": "Rohit Ghumare",
     "category": "Research",
     "capabilities": [
