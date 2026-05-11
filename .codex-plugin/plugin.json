@@ -1,0 +1,41 @@
+{
+  "name": "internet",
+  "version": "0.1.0",
+  "description": "Deep iterative web research skill for current, cited, source-triangulated answers.",
+  "author": {
+    "name": "Rohit Ghumare",
+    "email": "ghumare64@gmail.com",
+    "url": "https://github.com/rohitg00"
+  },
+  "homepage": "https://github.com/rohitg00/internet-skill",
+  "repository": "https://github.com/rohitg00/internet-skill",
+  "license": "MIT",
+  "keywords": [
+    "research",
+    "web-search",
+    "deep-research",
+    "citations",
+    "verification",
+    "osint",
+    "akbp",
+    "knowledge-base"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Internet",
+    "shortDescription": "Deep iterative web research for any question",
+    "longDescription": "Research any question across the public web with iterative query passes, source triangulation, contradiction search, claim ledgers, cited synthesis, and optional AKBP durable-memory preparation.",
+    "developerName": "Rohit Ghumare",
+    "category": "Research",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/rohitg00/internet-skill",
+    "privacyPolicyURL": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+    "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+    "defaultPrompt": "Use Internet to research this question deeply across the web with iterative searches, source triangulation, and cited synthesis.",
+    "brandColor": "#2563EB"
+  }
+}
