@@ -26,16 +26,34 @@ def test_create_workspace(tmp_path):
     assert target.exists()
     assert set(written) == {
         "research.md",
+        "plan.json",
         "queries.md",
         "claims.md",
         "sources.csv",
-        "akbp-intake.md",
+        "evidence.jsonl",
+        "contradictions.md",
         "gaps.md",
+        "akbp-intake.md",
         "manifest.json",
     }
     assert skipped == []
+
     manifest = json.loads((target / "manifest.json").read_text())
     assert manifest["topic"] == "Should we use Bun?"
     assert manifest["depth"] == "deep"
-    assert "Research Loop" in (target / "research.md").read_text()
+    assert manifest["schema"] == "internet-research-workspace/v2"
+    assert "plan.json" in manifest["files"]
+
+    plan = json.loads((target / "plan.json").read_text())
+    assert plan["topic"] == "Should we use Bun?"
+    assert plan["depth"] == "deep"
+    assert "contradiction" in [item["label"] for item in plan["query_passes"]]
+    assert "stop_conditions" in plan
+
+    research = (target / "research.md").read_text()
+    assert "Preflight" in research
+    assert "Contradiction" in research
+    assert "Final Answer" in research
+
     assert "Agent Knowledge Base Protocol" in (target / "akbp-intake.md").read_text()
+    assert (target / "sources.csv").read_text().startswith("id,url,title")
