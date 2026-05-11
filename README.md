@@ -1,23 +1,29 @@
 # Internet Skill
 
-Deep iterative web research for any question.
+Deep iterative web research for current facts, verification, due diligence, comparisons, market maps, and cited synthesis.
 
-`internet` turns broad research prompts into a disciplined investigation loop for current facts, source triangulation, contradiction searches, claim ledgers, and cited synthesis. When the user wants durable research memory, it uses AKBP: the Agent Knowledge Base Protocol from [github.com/rohitg00/akbp](https://github.com/rohitg00/akbp).
+`internet` turns broad research prompts into a disciplined investigation loop: preflight the question, plan source classes, search in passes, read primary evidence, check contradictions, track claims, and synthesize with citations. When research should become durable memory, it prepares review-gated AKBP source and claim previews.
 
 ## Install
 
+Install this repository with any skill-capable agent or skill manager that can consume a `skills/` directory. The skill itself lives at `skills/internet/SKILL.md` and is intentionally agent-portable.
+
+With SkillKit:
+
 ```bash
-/plugin marketplace add rohitg00/internet-skill
-/plugin install internet@internet-skill
+npx skillkit install rohitg00/internet-skill
 ```
+
+With an agent-specific plugin marketplace, add `rohitg00/internet-skill` and install the `internet` skill using that agent's normal plugin flow.
 
 ## What It Does
 
-- Plans search passes before answering.
-- Searches broad, primary, independent, community, contradiction, and gap-fill sources.
-- Tracks claims, confidence, source quality, dates, and unresolved gaps.
-- Prepares AKBP source and claim previews for durable, review-gated research memory.
-- Produces cited briefs, deep reports, comparisons, timelines, and evidence packs.
+- Plans research before searching.
+- Catches ambiguous prompts, generic rankings, numeric traps, temporal traps, and high-stakes edge cases.
+- Searches orientation, primary, independent, community, contradiction, and gap-fill passes.
+- Tracks claims, source tiers, dates, confidence, caveats, contradictions, and unresolved gaps.
+- Prepares AKBP source and claim previews without silently writing durable memory.
+- Produces cited briefs, reports, comparisons, timelines, recommendation memos, and evidence packs.
 - Includes a workspace helper for long-running investigations.
 
 ## Example Prompts
@@ -40,4 +46,4 @@ Use $internet to verify the latest Kubernetes Gateway API production readiness c
 python3 skills/internet/scripts/research_workspace.py "AI browser automation tools" --depth deep
 ```
 
-The helper creates a working folder with query, claim, source, gap, and AKBP intake ledgers.
+The helper creates a working folder with `research.md`, `plan.json`, query, claim, source, evidence, contradiction, gap, and AKBP intake ledgers.

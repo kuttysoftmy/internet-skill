@@ -1,7 +1,7 @@
 interface:
   display_name: "Internet"
-  short_description: "Deep iterative web research for any question"
-  default_prompt: "Use $internet to research this question deeply across the web with iterative searches, source triangulation, and cited synthesis."
+  short_description: "Deep cited web research"
+  default_prompt: "Use $internet to research this question deeply with iterative searches, source triangulation, contradiction checks, and cited synthesis."
   brand_color: "#2563EB"
 
 policy:

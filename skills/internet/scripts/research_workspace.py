@@ -6,6 +6,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
+WORKSPACE_FILES = [
+    "research.md",
+    "plan.json",
+    "queries.md",
+    "claims.md",
+    "sources.csv",
+    "evidence.jsonl",
+    "contradictions.md",
+    "gaps.md",
+    "akbp-intake.md",
+    "manifest.json",
+]
+
+
 def slugify(value):
     slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
     slug = re.sub(r"-{2,}", "-", slug)
@@ -14,6 +28,46 @@ def slugify(value):
 
 def today():
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def plan_json(topic, depth, created):
+    return {
+        "topic": topic,
+        "depth": depth,
+        "created": created,
+        "research_contract": {
+            "question": "",
+            "decision_or_deliverable": "",
+            "recency_window": "",
+            "geography_or_jurisdiction": "",
+            "audience": "",
+            "constraints": [],
+            "assumptions": [],
+        },
+        "entities": [],
+        "source_classes": [
+            "orientation",
+            "primary",
+            "independent",
+            "community_or_ground_truth",
+            "contradiction",
+            "gap_fill",
+        ],
+        "query_passes": [
+            {"label": "orientation", "queries": [], "status": "pending"},
+            {"label": "primary", "queries": [], "status": "pending"},
+            {"label": "independent", "queries": [], "status": "pending"},
+            {"label": "community_or_ground_truth", "queries": [], "status": "pending"},
+            {"label": "contradiction", "queries": [], "status": "pending"},
+            {"label": "gap_fill", "queries": [], "status": "pending"},
+        ],
+        "acceptance_criteria": [],
+        "stop_conditions": [
+            "Evidence meets acceptance criteria",
+            "Three consecutive targeted searches add no material evidence",
+            "Remaining gaps are inaccessible, private, paywalled, or out of scope",
+        ],
+    }
 
 
 def research_markdown(topic, depth, created):
@@ -28,38 +82,66 @@ Depth: {depth}
 - Decision or deliverable:
 - Recency window:
 - Geography or jurisdiction:
+- Audience:
+- Constraints:
 - Assumptions:
 - Required output:
 
-## Research Loop
+## Preflight
 
-### Ask
+- Demographic shopping trap:
+- Generic ranking trap:
+- Ambiguous entity trap:
+- Numeric trap:
+- Temporal trap:
+- Tutorial or error-message trap:
+- High-stakes trap:
+- Single-source trap:
 
-- Clarifications needed:
-- Scope boundaries:
+## Plan
 
-### Know
+- Entities, aliases, handles, repos, tickers:
+- Source classes:
+- Acceptance criteria:
+- Stop conditions:
 
-- Known facts:
-- Hypotheses:
-- Aliases, handles, products, competitors, dates:
+## Search Passes
 
-### Browse
+### Orientation
 
-- Pass 1 orientation:
-- Pass 2 primary sources:
-- Pass 3 independent sources:
-- Pass 4 community or ground truth:
-- Pass 5 contradiction:
-- Pass 6 gap fill:
+- Queries:
+- New entities:
+- Notes:
 
-### Prove
+### Primary Sources
 
-- High-confidence claims:
-- Medium-confidence claims:
-- Low-confidence or single-source claims:
-- Contradictions:
-- Gaps:
+- Queries:
+- Sources opened:
+- Notes:
+
+### Independent Sources
+
+- Queries:
+- Sources opened:
+- Notes:
+
+### Community Or Ground Truth
+
+- Queries:
+- Sources opened:
+- Notes:
+
+### Contradiction
+
+- Queries:
+- Conflicts found:
+- Notes:
+
+### Gap Fill
+
+- Queries:
+- Remaining gaps:
+- Notes:
 
 ## Synthesis Draft
 
@@ -72,7 +154,7 @@ def akbp_intake_markdown(topic):
 
 AKBP means Agent Knowledge Base Protocol.
 
-Use this file to prepare reviewed sources and durable claim proposals. Do not apply AKBP writes until the user approves the dry-run preview.
+Prepare reviewed sources and durable claim proposals here. Do not apply AKBP writes until dry-run output is reviewed and approved.
 
 ## Knowledge Base
 
@@ -109,8 +191,8 @@ Use this file to prepare reviewed sources and durable claim proposals. Do not ap
 def claims_markdown():
     return """# Claim Ledger
 
-| ID | Claim | Evidence | Source ID | Date | Confidence | Notes |
-|---|---|---|---|---|---|---|
+| ID | Claim | Evidence | Source ID | Event Date | Publication Date | Confidence | Caveat |
+|---|---|---|---|---|---|---|---|
 """
 
 
@@ -122,12 +204,30 @@ def queries_markdown():
 """
 
 
+def contradictions_markdown():
+    return """# Contradictions
+
+| Claim | Source A | Source B | Conflict | Likely Explanation | Confidence |
+|---|---|---|---|---|---|
+"""
+
+
 def gaps_markdown():
     return """# Gaps
 
 | Gap | Why It Matters | Search Tried | Status | Next Step |
 |---|---|---|---|---|
 """
+
+
+def manifest_json(topic, depth, created):
+    return {
+        "topic": topic,
+        "depth": depth,
+        "created": created,
+        "schema": "internet-research-workspace/v2",
+        "files": WORKSPACE_FILES,
+    }
 
 
 def write_file(path, content, overwrite):
@@ -141,26 +241,17 @@ def create_workspace(topic, root, depth, overwrite):
     created = today()
     target = root / f"{created}-{slugify(topic)}"
     target.mkdir(parents=True, exist_ok=True)
-    manifest = {
-        "topic": topic,
-        "depth": depth,
-        "created": created,
-        "files": [
-            "research.md",
-            "queries.md",
-            "claims.md",
-            "sources.csv",
-            "akbp-intake.md",
-            "gaps.md",
-        ],
-    }
+    manifest = manifest_json(topic, depth, created)
     files = {
         "research.md": research_markdown(topic, depth, created),
+        "plan.json": json.dumps(plan_json(topic, depth, created), indent=2) + "\n",
         "queries.md": queries_markdown(),
         "claims.md": claims_markdown(),
-        "sources.csv": "id,url,title,author,published,accessed,type,tier,notes\n",
-        "akbp-intake.md": akbp_intake_markdown(topic),
+        "sources.csv": "id,url,title,author,published,event_date,accessed,type,tier,opened,notes\n",
+        "evidence.jsonl": "",
+        "contradictions.md": contradictions_markdown(),
         "gaps.md": gaps_markdown(),
+        "akbp-intake.md": akbp_intake_markdown(topic),
         "manifest.json": json.dumps(manifest, indent=2) + "\n",
     }
     written = []
