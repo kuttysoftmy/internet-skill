@@ -43,7 +43,12 @@ Use $internet to verify the latest Kubernetes Gateway API production readiness c
 ## Workspace Helper
 
 ```bash
-python3 skills/internet/scripts/research_workspace.py "AI browser automation tools" --depth deep
+WORKSPACE="$(python3 skills/internet/scripts/research_workspace.py create "AI browser automation tools" --depth deep | sed -n '1p')"
+python3 skills/internet/scripts/research_workspace.py add-query "$WORKSPACE" --pass-label orientation --query "AI browser automation tools 2026" --tool web --why "discover landscape" --result "identified primary projects"
+python3 skills/internet/scripts/research_workspace.py add-source "$WORKSPACE" --url "https://example.com" --title "Source title" --type primary --tier 1 --published YYYY-MM-DD
+python3 skills/internet/scripts/research_workspace.py add-claim "$WORKSPACE" --claim "Material claim" --evidence "Evidence note" --source-id S001 --confidence High
+python3 skills/internet/scripts/research_workspace.py add-evidence "$WORKSPACE" --source-id S001 --claim-id C001 --evidence "Structured evidence note"
+python3 skills/internet/scripts/research_workspace.py summary "$WORKSPACE"
 ```
 
-The helper creates a working folder with `research.md`, `plan.json`, query, claim, source, evidence, contradiction, gap, and AKBP intake ledgers.
+The helper creates a working folder and records query, source, claim, evidence, contradiction, gap, and AKBP intake ledgers. Recorder commands also update `research.md`, so deep research does not end with an empty-looking report.
