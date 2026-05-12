@@ -20,10 +20,15 @@ Prime directive: do not answer a web-backed request from memory unless the user 
 7. Synthesize with inline citations, confidence, conflicts, and gaps. Separate source claims from your inference.
 8. If the research should persist for future agents, use the AKBP preview workflow. Do not silently write durable memory.
 
-For long investigations, create a workspace:
+For long investigations, create a workspace and populate it as you browse. The recorder commands update both the structured ledgers and `research.md` activity log:
 
 ```bash
-python3 skills/internet/scripts/research_workspace.py "topic or question" --depth deep
+WORKSPACE="$(python3 skills/internet/scripts/research_workspace.py create "topic or question" --depth deep | sed -n '1p')"
+python3 skills/internet/scripts/research_workspace.py add-query "$WORKSPACE" --pass-label orientation --query "exact search query" --tool web --why "what this pass should prove" --result "what changed"
+python3 skills/internet/scripts/research_workspace.py add-source "$WORKSPACE" --url "https://example.com/source" --title "source title" --type official --tier 1 --published YYYY-MM-DD --notes "what this source supports"
+python3 skills/internet/scripts/research_workspace.py add-claim "$WORKSPACE" --claim "material claim" --evidence "specific evidence" --source-id S001 --confidence High --publication-date YYYY-MM-DD
+python3 skills/internet/scripts/research_workspace.py add-evidence "$WORKSPACE" --source-id S001 --claim-id C001 --evidence "structured evidence note" --confidence High
+python3 skills/internet/scripts/research_workspace.py summary "$WORKSPACE"
 ```
 
 ## Preflight Traps
@@ -147,7 +152,7 @@ Never store secrets, cookies, tokens, private URLs, personal data, or sensitive 
 
 ## Workspace Artifacts
 
-Use `scripts/research_workspace.py` for investigations that need persistence, many sources, or multiple passes. It creates:
+Use `scripts/research_workspace.py` for investigations that need persistence, many sources, or multiple passes. It creates and populates:
 
 - `research.md`: contract, plan, method, and synthesis draft.
 - `plan.json`: machine-readable plan skeleton.
@@ -159,6 +164,17 @@ Use `scripts/research_workspace.py` for investigations that need persistence, ma
 - `gaps.md`: open questions and follow-up searches.
 - `akbp-intake.md`: AKBP source and claim preview checklist.
 - `manifest.json`: metadata.
+
+Minimum populated workspace for standard, deep, or exhaustive work:
+
+- One `queries.md` row for each search pass actually run.
+- One `sources.csv` row for every opened source considered for evidence.
+- One `claims.md` row for each material claim in the synthesis.
+- One `evidence.jsonl` row for each source-backed claim.
+- `contradictions.md` rows when sources conflict.
+- `gaps.md` rows for unresolved but decision-relevant unknowns.
+
+Before final synthesis, run `summary` and open `research.md`. If sources, claims, or evidence are zero after a workspace-backed investigation, or if `research.md` still contains only blank template headings, the workspace is incomplete.
 
 ## Failure Modes To Avoid
 
